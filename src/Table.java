@@ -10,7 +10,14 @@ public class Table {
 		size = s;
 	}
 	public String add( Student s){
-		if(t.size() < size)		t.add(s);
+		if(t.size() < size)	{
+			for( int i = 0; i < t.size(); i++){
+				if(t.get(i).isinCompatible(s)){
+					return s.getName()+ " is incomptible with at least one person in the table group.";
+				}
+			}
+			t.add(s);
+		}			
 		else  return "Table already filled.";
 		return null;
 	}
@@ -19,10 +26,19 @@ public class Table {
 			t.remove(s);
 		}	
 	}
+	public int sitInFrontValue(){
+		int count = 0;
+		for( int i = 0; i < t.size(); i++){
+			if(t.get(i).getSitInFront()){
+				count++;
+			}
+		}
+		return count;
+	}
 	public String toString(){
 		String str = "";
 		for( int i = 0; i < t.size(); i++){
-			str += t.get(i).getName();
+			str += t.get(i).getName() + "\n";
 		}
 		return str;
 		
