@@ -1,3 +1,5 @@
 Day 1: 5/12/16
 - Added Dev Log
-- 
+- Added getter and setter and simple methods 
+- Added boolean method to see if students are compatible or not
+- Added a value to use sit in front or not
