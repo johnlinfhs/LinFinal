@@ -3,11 +3,13 @@ import java.util.ArrayList;
 
 public class Table {
 	private int size;
+	private int num;
 	
 	private ArrayList<Student> t = new ArrayList<Student>();
 	
-	public Table ( int s){
+	public Table ( int s, int n){
 		size = s;
+		num = n;
 	}
 	public String add( Student s){
 		if(t.size() < size)	{
