@@ -7,26 +7,56 @@ import java.io.*;
 public class Main{
 	
 	public static void main (String[] args){
-		int tableSize = 4;
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Enter the Table Size Number: ");
+		int tableSize = reader.nextInt();
 		String listOfStudents = getFileAsString("input1.txt");
-		String [] students = listOfStudents.split("\n");
-		int numTables;
-		if(students.length % tableSize == 0){
-			numTables = students.length / tableSize;
+		String [] s = listOfStudents.split("\n");
+		Student [] students = new Student[s.length];
+		for( int i = 0; i < s.length; i++){
+			Student a = new Student(s[i].trim());
+			students[i] = a;
 		}
-		else{
-			numTables = students.length / tableSize + 1;
-		}
+		int numTables = getNumTables(students.length, tableSize);
+		
 		ArrayList<Table> tables = new ArrayList<Table>();
 		for(int i = 0; i < numTables; i++){
 			Table t = new Table(tableSize, i);
 			tables.add(t);
-		}			
-		for( int i = 0; i < students.length; i++){
-			System.out.println(students[i]);
+		}		
+		int count = 0;
+		while(  count < students.length){
+			int t = (int) (Math.random() * tables.size());	
+			if(tables.get(t).add(students[count]).equals("added")){
+				count++;
+			}
+		}
+//		print(tables);
+		printToTextDocument(tables);
+		
+		
+	}
+	private static void printToTextDocument(ArrayList<Table> tables) {
+		String str= "";
+		for( int i = 0; i < tables.size(); i++){
+			str += tables.get(i).toString();
+		}
+		writeStringToFile("output1.txt", str);
+		
+	}
+	private static void print(ArrayList<Table> tables) {
+		for( int i = 0; i < tables.size(); i++){
+			System.out.print(tables.get(i).toString());
 		}
 		
-		
+	}
+	private static int getNumTables(int length, int tableSize) {
+		if(length % tableSize == 0){
+			return length / tableSize;
+		}
+		else{
+			return length / tableSize + 1;
+		}
 	}
 	public static String getFileAsString(String filename) {
 		Scanner s;
@@ -47,7 +77,11 @@ public class Main{
 			PrintWriter out = new PrintWriter(filename);
 			for (int i = 0; i < text.length(); i++) {
 				char n = text.charAt(i);
-				out.print(n);
+				if (n != '\n') {
+					out.print(n);
+				} else {
+					out.println();
+				}
 			}
 			out.close();
 		} catch (Exception e) {

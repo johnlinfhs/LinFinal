@@ -9,7 +9,7 @@ public class Table {
 	
 	public Table ( int s, int n){
 		size = s;
-		num = n;
+		num = n+1;
 	}
 	public String add( Student s){
 		if(t.size() < size)	{
@@ -21,7 +21,7 @@ public class Table {
 			t.add(s);
 		}			
 		else  return "Table already filled.";
-		return null;
+		return "added";
 	}
 	public void remove( Student s){
 		if(t.contains(s)){
@@ -38,9 +38,9 @@ public class Table {
 		return count;
 	}
 	public String toString(){
-		String str = "";
+		String str = "\nTable " + num + ": ";
 		for( int i = 0; i < t.size(); i++){
-			str += t.get(i).getName() + "\n";
+			str += t.get(i).getName() + ", ";
 		}
 		return str;
 		
