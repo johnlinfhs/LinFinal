@@ -17,6 +17,7 @@ public class Table {
 				if(t.get(i).isinCompatible(s)){
 					return s.getName()+ " is incomptible with at least one person in the table group.";
 				}
+//				if(t.get(i).)
 			}
 			t.add(s);
 		}			

@@ -6,8 +6,10 @@ public class Student {
 	private String name;
 	private int number = -1;
 	private boolean sitInFront = false;
+	private boolean naughty = false;
 	private ArrayList<Student> compatible = new ArrayList<Student>();
 	private ArrayList<Student> incompatible = new ArrayList<Student>();
+	private ArrayList<Student> satWithStudent = new ArrayList<Student>();
 	
 	public Student( String n){
 		name = n;
@@ -35,6 +37,12 @@ public class Student {
 	public void setSitInFront(boolean s){
 		sitInFront = s;
 	}
+	public boolean getNaughtiness(){
+		return naughty;
+	}
+	public void setNaughtiness(boolean s){
+		naughty = s;
+	}
 	public void addCompatible(Student s){
 		compatible.add(s);
 	}
@@ -57,6 +65,19 @@ public class Student {
 	}
 	public boolean isinCompatible(Student s){
 		if( incompatible.contains(s)){
+			return true;
+		}
+		return false;
+	}
+	public void addSatWithStudent(Student s){
+		satWithStudent.add(s);
+	}
+	public void removeSatWithStudent(Student s){
+		if(satWithStudent.contains(s))
+		satWithStudent.remove(s);
+	}
+	public boolean satwithStudent(Student s){
+		if( satWithStudent.contains(s)){
 			return true;
 		}
 		return false;

@@ -10,20 +10,42 @@ public class Main{
 		Scanner reader = new Scanner(System.in);
 		System.out.println("Enter the Table Size Number: ");
 		int tableSize = reader.nextInt();
-		String listOfStudents = getFileAsString("input1.txt");
+		
+		//Complete Putting Students in ArrayList
+		String listOfStudents = getFileAsString("class.txt");
 		String [] s = listOfStudents.split("\n");
-		Student [] students = new Student[s.length];
+				Student [] students = new Student[s.length];
 		for( int i = 0; i < s.length; i++){
 			Student a = new Student(s[i].trim());
 			students[i] = a;
 		}
-		int numTables = getNumTables(students.length, tableSize);
+		//Completing Grouping of Naughty Students
+		ArrayList<NaughtyGroup> naughtyGroups = new ArrayList<NaughtyGroup>();
+		String listOfNaughtyStudents = getFileAsString("naughtylist.txt");
+		String [] seperateIntoGroups = listOfNaughtyStudents.split("\n");
+		for(int i = 0; i < seperateIntoGroups.length; i++){
+			String[] groups = seperateIntoGroups[i].split(",");
+			NaughtyGroup n = new NaughtyGroup();
+			for( int j = 0; j < groups.length; j++){
+				for( int z = 0; z < students.length; z++){
+					if(groups[j].equals(students[z].getName())){
+						n.addStudent(students[z]);
+					}
+				}
+			}
+			naughtyGroups.add(n);
+		}	
 		
+		
+		//Complete Creating Tables
+		int numTables = getNumTables(students.length, tableSize);		
 		ArrayList<Table> tables = new ArrayList<Table>();
 		for(int i = 0; i < numTables; i++){
 			Table t = new Table(tableSize, i);
 			tables.add(t);
-		}		
+		}	
+		
+		//Fill Tables with Students
 		int count = 0;
 		while(  count < students.length){
 			int t = (int) (Math.random() * tables.size());	
