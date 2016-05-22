@@ -14,15 +14,21 @@ public class Table {
 	public String add( Student s){
 		if(t.size() < size)	{
 			for( int i = 0; i < t.size(); i++){
-				if(t.get(i).isinCompatible(s)){
-					return s.getName()+ " is incomptible with at least one person in the table group.";
+				if(t.get(i).isCompatible(s)){
+					for( int j = 0; j < t.size(); j++){
+						if(t.get(i).isinCompatible(s)){
+							return s.getName() + "is Incompatible with one or more students";
+						}
+					}
+					t.add(s);
+					return "added";
 				}
-//				if(t.get(i).)
-			}
+				// if I added a student in a nice group, I need to add both students
+			}	
 			t.add(s);
+			return "added";
 		}			
-		else  return "Table already filled.";
-		return "added";
+		return "Table already filled.";
 	}
 	public void remove( Student s){
 		if(t.contains(s)){

@@ -14,5 +14,11 @@ public class NiceGroup {
 	public void removeStudent(Student s){
 		students.remove(s);
 	}
+	public int getSize(){
+		return students.size();
+	}
+	public Student get(int i) {
+		return students.get(i);
+	}
 }
 

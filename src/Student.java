@@ -7,6 +7,7 @@ public class Student {
 	private int number = -1;
 	private boolean sitInFront = false;
 	private boolean naughty = false;
+	private boolean inNiceGroup = false;
 	private ArrayList<Student> compatible = new ArrayList<Student>();
 	private ArrayList<Student> incompatible = new ArrayList<Student>();
 	private ArrayList<Student> satWithStudent = new ArrayList<Student>();
@@ -43,6 +44,13 @@ public class Student {
 	public void setNaughtiness(boolean s){
 		naughty = s;
 	}
+	public void setInNiceGroup(boolean s){
+		inNiceGroup = s;
+	}
+	public boolean getInNiceGroup(){
+		return inNiceGroup;
+	}
+	
 	public void addCompatible(Student s){
 		compatible.add(s);
 	}
