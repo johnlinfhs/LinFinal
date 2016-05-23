@@ -54,7 +54,7 @@ public class Student {
 	public void addCompatible(Student s){
 		compatible.add(s);
 	}
-	public void addimCompatible(Student s){
+	public void addinCompatible(Student s){
 		incompatible.add(s);
 	}
 	public void removeCompatible(Student s){

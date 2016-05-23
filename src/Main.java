@@ -24,39 +24,17 @@ public class Main{
 		ArrayList<Student> helpers = new ArrayList<Student>();
 		String canHelp = getFileAsString("helpers.txt");
 		String[] seperateHelpers = canHelp.split("\n");
-		for( int i = 0; i < seperateHelpers.length; i++){
-			for( int z = 0; z < students.length; z++){
-				if(seperateHelpers[i].trim().equals(students[z].getName())){
-					helpers.add(students[z]);
-				}
-			}
-		}
+		fillHelp(seperateHelpers, helpers, students);
+		
 		ArrayList<Student> helpees = new ArrayList<Student>();
 		String needHelp = getFileAsString("helpees.txt");
 		String[] seperateHelpees = needHelp.split("\n");
-		for( int i = 0; i < seperateHelpees.length; i++){
-			for( int z = 0; z < students.length; z++){
-				if(seperateHelpees[i].trim().equals(students[z].getName())){
-					helpees.add(students[z]);
-				}
-			}
-		}
+		fillHelp(seperateHelpees, helpees, students);
 		
 		//Completing Grouping of Nice Pairing
 		ArrayList<NiceGroup> niceGroups = new ArrayList<NiceGroup>();
-		int minSize = getMinValue(helpers, helpees);
-		for(int i = 0; i < minSize; i++){
-			int a = (int) (Math.random() * helpers.size());
-			int b = (int) (Math.random() * helpees.size());
-			NiceGroup n = new NiceGroup();
-			n.addStudent(helpers.get(a));
-//			helpers.get(a).addCompatible(helpees.get(b));
-//			helpees.get(b).addCompatible(helpers.get(a));
-			n.addStudent(helpees.get(b));
-			helpers.remove(a);
-			helpees.remove(b);
-			niceGroups.add(n);
-		}
+		fillNiceGroups(niceGroups,helpers, helpees);
+		
 		//Add niceGroups into Compatible
 		for( int i = 0; i < students.length; i++){
 			for( int j = 0 ; j < niceGroups.size(); j++){
@@ -92,18 +70,8 @@ public class Main{
 		ArrayList<NaughtyGroup> naughtyGroups = new ArrayList<NaughtyGroup>();
 		String listOfNaughtyStudents = getFileAsString("naughtylist.txt");
 		String [] seperateIntoGroups = listOfNaughtyStudents.split("\n");
-		for(int i = 0; i < seperateIntoGroups.length; i++){
-			String[] groups = seperateIntoGroups[i].split(",");
-			NaughtyGroup n = new NaughtyGroup();
-			for( int j = 0; j < groups.length; j++){
-				for( int z = 0; z < students.length; z++){
-					if(groups[j].trim().equals(students[z].getName())){
-						n.addStudent(students[z]);
-					}
-				}
-			}
-			naughtyGroups.add(n);
-		}	
+		fillNaughtyGroups(naughtyGroups, seperateIntoGroups, students);	
+		
 		//Add Naughty Groups into incompatible
 		for( int i = 0; i < students.length; i++){
 			for( int j = 0 ; j < naughtyGroups.size(); j++){
@@ -111,7 +79,7 @@ public class Main{
 					if(students[i].getName().equals(naughtyGroups.get(j).get(k).getName())){
 						for(int l = 0; l < naughtyGroups.get(j).getSize(); l++){
 							if(!(students[i].getName().equals(naughtyGroups.get(j).get(k).getName()))){
-								students[i].addCompatible(naughtyGroups.get(j).get(l));
+								students[i].addinCompatible(naughtyGroups.get(j).get(l));
 							}
 						}
 					}					
@@ -127,6 +95,14 @@ public class Main{
 			Table t = new Table(tableSize, i);
 			tables.add(t);
 		}	
+		// Fill tables with nice groups first
+		
+		for( int i = 0; i < niceGroups.size(); i++){
+			for( int j = 0; j < niceGroups.get(i).getSize(); j++){
+				int t = (int) (Math.random() * tables.size());
+				tables.get(t).add(niceGroups.get(i).get(j)).equals("added");				
+			}
+		}
 		
 		//Fill Tables with Students
 		int count = 0;
@@ -141,6 +117,51 @@ public class Main{
 		
 		
 	}
+	
+	private static void fillNaughtyGroups(ArrayList<NaughtyGroup> naughtyGroups, 
+			String[] seperateIntoGroups,Student[] students) {
+		for(int i = 0; i < seperateIntoGroups.length; i++){
+			String[] groups = seperateIntoGroups[i].split(",");
+			NaughtyGroup n = new NaughtyGroup();
+			for( int j = 0; j < groups.length; j++){
+				for( int z = 0; z < students.length; z++){
+					if(groups[j].trim().equals(students[z].getName())){
+						n.addStudent(students[z]);
+					}
+				}
+			}
+			naughtyGroups.add(n);
+		}
+		
+	}
+
+	private static void fillNiceGroups(ArrayList<NiceGroup> niceGroups,	
+			ArrayList<Student> helpers, ArrayList<Student> helpees) {
+		int minSize = getMinValue(helpers, helpees);
+		for(int i = 0; i < minSize; i++){
+			int a = (int) (Math.random() * helpers.size());
+			int b = (int) (Math.random() * helpees.size());
+			NiceGroup n = new NiceGroup();
+			n.addStudent(helpers.get(a));
+//			helpers.get(a).addCompatible(helpees.get(b));
+//			helpees.get(b).addCompatible(helpers.get(a));
+			n.addStudent(helpees.get(b));
+			helpers.remove(a);
+			helpees.remove(b);
+			niceGroups.add(n);
+		}		
+	}
+
+	private static void fillHelp(String[] seperate,	ArrayList<Student> help, Student[] students) {
+		for( int i = 0; i < seperate.length; i++){
+			for( int z = 0; z < students.length; z++){
+				if(seperate[i].trim().equals(students[z].getName())){
+					help.add(students[z]);
+				}
+			}
+		}		
+	}
+
 	private static int getMinValue(ArrayList<Student> helpers,	ArrayList<Student> helpees) {
 		if(helpers.size() < helpees.size()){
 			return helpers.size();

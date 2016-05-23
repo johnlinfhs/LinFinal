@@ -23,3 +23,8 @@ Day 6: 5/19/16
 - Implemented NaaughtyFeature methods
 - Might Implement NiceFeature
 - Remember to use output
+
+Day 7: 5/23/16
+- Finished implementing naughty feature
+- Finished Nice feature
+- Might want to implement new seating chart * optional

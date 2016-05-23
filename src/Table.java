@@ -14,6 +14,11 @@ public class Table {
 	public String add( Student s){
 		if(t.size() < size)	{
 			for( int i = 0; i < t.size(); i++){
+				if(t.get(i).getName().equals(s.getName())){
+					return "added";
+				}
+			}
+			for( int i = 0; i < t.size(); i++){
 				if(t.get(i).isCompatible(s)){
 					for( int j = 0; j < t.size(); j++){
 						if(t.get(i).isinCompatible(s)){
@@ -23,7 +28,6 @@ public class Table {
 					t.add(s);
 					return "added";
 				}
-				// if I added a student in a nice group, I need to add both students
 			}	
 			t.add(s);
 			return "added";
