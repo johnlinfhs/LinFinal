@@ -7,20 +7,22 @@ import java.io.*;
 public class Main{
 	
 	public static void main (String[] args){
-		
+		//Program Start
 		Scanner reader = new Scanner(System.in);
+		System.out.println("***NOTE***\nIf the program does not terminate in 10 seconds"
+				+ " manually terminate the program and re-run the program.\n");
 		System.out.println("Enter the Table Size Number: ");
 		int tableSize = reader.nextInt();
 		
-		//Complete Putting Students in ArrayList
+		//Complete Putting Students in Array
 		String listOfStudents = getFileAsString("class.txt");
-		String [] s = listOfStudents.split("\n");
+		String[] s = listOfStudents.split("\n");
 				Student [] students = new Student[s.length];
 		for( int i = 0; i < s.length; i++){
 			Student a = new Student(s[i].trim());
 			students[i] = a;
 		}
-		//Pair in Nice group kids that need help and kids that want help
+		//Create Helpees and Helpers
 		ArrayList<Student> helpers = new ArrayList<Student>();
 		String canHelp = getFileAsString("helpers.txt");
 		String[] seperateHelpers = canHelp.split("\n");
@@ -31,7 +33,7 @@ public class Main{
 		String[] seperateHelpees = needHelp.split("\n");
 		fillHelp(seperateHelpees, helpees, students);
 		
-		//Completing Grouping of Nice Pairing
+		//Completing Pairing of Helpers and Helpees
 		ArrayList<NiceGroup> niceGroups = new ArrayList<NiceGroup>();
 		fillNiceGroups(niceGroups,helpers, helpees);
 		
@@ -41,7 +43,7 @@ public class Main{
 				for(int k = 0; k < niceGroups.get(j).getSize(); k++){
 					if(students[i].getName().equals(niceGroups.get(j).get(k).getName())){
 						for(int l = 0; l < niceGroups.get(j).getSize(); l++){
-							if(!(students[i].getName().equals(niceGroups.get(j).get(k).getName()))){
+							if(!(students[i].getName().equals(niceGroups.get(j).get(l).getName()))){
 								students[i].addCompatible(niceGroups.get(j).get(l));
 								students[i].setInNiceGroup(true);
 							}
@@ -50,22 +52,7 @@ public class Main{
 				}
 			}
 		}
-		
-		//Adding the leftover to random groups
-//		if(helpers.size() > 0){
-//			for( int i = 0; i < helpers.size(); i++){
-//				int a = (int)(Math.random() * niceGroups.size());
-//				niceGroups.get(a).addStudent(helpers.get(i));
-//			}
-//		}
-//		else if(helpees.size() > 0){
-//			for( int i = 0; i < helpees.size(); i++){
-//				int a = (int)(Math.random() * niceGroups.size());
-//				niceGroups.get(a).addStudent(helpers.get(i));
-//			}
-//		}
-
-		
+	
 		//Completing Grouping of Naughty Students
 		ArrayList<NaughtyGroup> naughtyGroups = new ArrayList<NaughtyGroup>();
 		String listOfNaughtyStudents = getFileAsString("naughtylist.txt");
@@ -78,7 +65,7 @@ public class Main{
 				for(int k = 0; k < naughtyGroups.get(j).getSize(); k++){
 					if(students[i].getName().equals(naughtyGroups.get(j).get(k).getName())){
 						for(int l = 0; l < naughtyGroups.get(j).getSize(); l++){
-							if(!(students[i].getName().equals(naughtyGroups.get(j).get(k).getName()))){
+							if(!(students[i].getName().equals(naughtyGroups.get(j).get(l).getName()))){
 								students[i].addinCompatible(naughtyGroups.get(j).get(l));
 							}
 						}
@@ -87,7 +74,6 @@ public class Main{
 			}
 		}
 		
-		
 		//Complete Creating Tables
 		int numTables = getNumTables(students.length, tableSize);		
 		ArrayList<Table> tables = new ArrayList<Table>();
@@ -95,29 +81,43 @@ public class Main{
 			Table t = new Table(tableSize, i);
 			tables.add(t);
 		}	
+
 		// Fill tables with nice groups first
-		
 		for( int i = 0; i < niceGroups.size(); i++){
+			int count = 0;
+			int t = (int) (Math.random() * tables.size());
 			for( int j = 0; j < niceGroups.get(i).getSize(); j++){
-				int t = (int) (Math.random() * tables.size());
-				tables.get(t).add(niceGroups.get(i).get(j)).equals("added");				
+				if(tables.get(t).getSize() - tables.get(t).getCurrentSize() 
+						- niceGroups.get(i).getSize() >= 0){
+					if((tables.get(t).testAdd(niceGroups.get(i).get(j)).equals("added"))){
+						count++;
+					}					
+				}					
+			}	
+			if(count == niceGroups.get(i).getSize()){
+				for( int j = 0; j < niceGroups.get(i).getSize(); j++){
+				tables.get(t).add(niceGroups.get(i).get(j)).equals("added");
+				}
+			}			
+			else{
+				i--;
 			}
 		}
-		
+
 		//Fill Tables with Students
 		int count = 0;
-		while(  count < students.length){
+		while( count < students.length ){
 			int t = (int) (Math.random() * tables.size());	
-			if(tables.get(t).add(students[count]).equals("added")){
+			if(students[count].getInNiceGroup()){
+				count++;
+			}
+			else if(tables.get(t).add(students[count]).equals("added")){
 				count++;
 			}
 		}
 //		print(tables);
-		printToTextDocument(tables);
-		
-		
+		printToTextDocument(tables);		
 	}
-	
 	private static void fillNaughtyGroups(ArrayList<NaughtyGroup> naughtyGroups, 
 			String[] seperateIntoGroups,Student[] students) {
 		for(int i = 0; i < seperateIntoGroups.length; i++){
@@ -131,27 +131,21 @@ public class Main{
 				}
 			}
 			naughtyGroups.add(n);
-		}
-		
-	}
-
-	private static void fillNiceGroups(ArrayList<NiceGroup> niceGroups,	
-			ArrayList<Student> helpers, ArrayList<Student> helpees) {
-		int minSize = getMinValue(helpers, helpees);
-		for(int i = 0; i < minSize; i++){
-			int a = (int) (Math.random() * helpers.size());
-			int b = (int) (Math.random() * helpees.size());
-			NiceGroup n = new NiceGroup();
-			n.addStudent(helpers.get(a));
-//			helpers.get(a).addCompatible(helpees.get(b));
-//			helpees.get(b).addCompatible(helpers.get(a));
-			n.addStudent(helpees.get(b));
-			helpers.remove(a);
-			helpees.remove(b);
-			niceGroups.add(n);
 		}		
 	}
-
+	private static void fillNiceGroups(ArrayList<NiceGroup> niceGroups,	
+			ArrayList<Student> helpers, ArrayList<Student> helpees) {
+		for(int i = 0; i < helpers.size(); i++){
+			if(helpees.size() > 0){
+				int b = (int) (Math.random() * helpees.size());
+				NiceGroup n = new NiceGroup();
+				n.addStudent(helpers.get(i));
+				n.addStudent(helpees.get(b));
+				helpees.remove(b);
+				niceGroups.add(n);
+			}
+		}		
+	}
 	private static void fillHelp(String[] seperate,	ArrayList<Student> help, Student[] students) {
 		for( int i = 0; i < seperate.length; i++){
 			for( int z = 0; z < students.length; z++){
@@ -160,13 +154,6 @@ public class Main{
 				}
 			}
 		}		
-	}
-
-	private static int getMinValue(ArrayList<Student> helpers,	ArrayList<Student> helpees) {
-		if(helpers.size() < helpees.size()){
-			return helpers.size();
-		}
-		return helpees.size();
 	}
 	private static void printToTextDocument(ArrayList<Table> tables) {
 		String str= "";
@@ -179,8 +166,7 @@ public class Main{
 	private static void print(ArrayList<Table> tables) {
 		for( int i = 0; i < tables.size(); i++){
 			System.out.print(tables.get(i).toString());
-		}
-		
+		}		
 	}
 	private static int getNumTables(int length, int tableSize) {
 		if(length % tableSize == 0){

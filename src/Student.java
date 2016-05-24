@@ -49,8 +49,7 @@ public class Student {
 	}
 	public boolean getInNiceGroup(){
 		return inNiceGroup;
-	}
-	
+	}	
 	public void addCompatible(Student s){
 		compatible.add(s);
 	}
@@ -90,5 +89,4 @@ public class Student {
 		}
 		return false;
 	}
-
 }

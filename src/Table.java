@@ -14,22 +14,22 @@ public class Table {
 	public String add( Student s){
 		if(t.size() < size)	{
 			for( int i = 0; i < t.size(); i++){
-				if(t.get(i).getName().equals(s.getName())){
-					return "added";
-				}
-			}
-			for( int i = 0; i < t.size(); i++){
-				if(t.get(i).isCompatible(s)){
-					for( int j = 0; j < t.size(); j++){
-						if(t.get(i).isinCompatible(s)){
-							return s.getName() + "is Incompatible with one or more students";
-						}
-					}
-					t.add(s);
-					return "added";
+				if(t.get(i).isinCompatible(s)){
+					return s.getName() + "is Incompatible with one or more students";
 				}
 			}	
 			t.add(s);
+			return "added";
+		}			
+		return "Table already filled.";
+	}
+	public String testAdd( Student s){
+		if(t.size() < size)	{
+			for( int i = 0; i < t.size(); i++){
+				if(t.get(i).isinCompatible(s)){
+					return s.getName() + "is Incompatible with one or more students";
+				}
+			}	
 			return "added";
 		}			
 		return "Table already filled.";
@@ -53,8 +53,16 @@ public class Table {
 		for( int i = 0; i < t.size(); i++){
 			str += t.get(i).getName() + ", ";
 		}
-		return str;
-		
+		return str;		
+	}
+	public int getSize(){
+		return size;
+	}
+	public int getCurrentSize(){
+		return t.size();
+	}
+	public void setSize(int s){
+		size = s;
 	}
 
 }

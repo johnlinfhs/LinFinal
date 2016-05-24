@@ -28,3 +28,10 @@ Day 7: 5/23/16
 - Finished implementing naughty feature
 - Finished Nice feature
 - Might want to implement new seating chart * optional
+- Double checking, need to recode nice and naughty feature
+- Check by printing
+- COMPLETELY WORKING, one small problem of looping forever and ask Mr.D for a complete rerun
+
+Day 8: 5/24/16
+- Completely Working, added a print statement for the user to understand
+- Start the write up :) :) :) :) :)
