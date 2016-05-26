@@ -115,7 +115,7 @@ public class Main{
 				count++;
 			}
 		}
-//		print(tables);
+		print(tables);
 		printToTextDocument(tables);		
 	}
 	private static void fillNaughtyGroups(ArrayList<NaughtyGroup> naughtyGroups, 
@@ -160,7 +160,7 @@ public class Main{
 		for( int i = 0; i < tables.size(); i++){
 			str += tables.get(i).toString();
 		}
-		writeStringToFile("output1.txt", str);
+		writeStringToFile("seatingArrangement.txt", str);
 		
 	}
 	private static void print(ArrayList<Table> tables) {

@@ -1,5 +1,0 @@
-Kate,Hadar
-Ezra,Sarah
-Mani,Rohan,Eric
-Idan,Aditi,Gavin,Oded
-Jake,Roei

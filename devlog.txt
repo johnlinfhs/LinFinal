@@ -35,3 +35,8 @@ Day 7: 5/23/16
 Day 8: 5/24/16
 - Completely Working, added a print statement for the user to understand
 - Start the write up :) :) :) :) :)
+
+Day 9: 5/26/16
+- Finished walkthrough 
+- Finished write up
+- Finished Video
